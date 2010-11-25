@@ -4,16 +4,13 @@ require 'httpclient'
 
 hc = HTTPClient.new
 
-file = "cabbage.mp3"
-if ARGV[0] then
-  file = ARGV[0]
-end
+filename = ARGV[0]
+filename = "cabbage.mp3" unless filename
 
-data = File.open(file).read
-
-postdata = { "data" => data, "file_ext" => 'mp3' }
-
-html = hc.post_content("http://masui.sfc.keio.ac.jp/gyaco/upload", postdata)
-
-puts html
+File.open(filename){ |f|
+  postdata = {
+    'file' => f
+  }
+  puts hc.post_content("http://masui.sfc.keio.ac.jp/gyaco/upload", postdata)
+}
 
